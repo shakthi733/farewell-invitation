@@ -10,9 +10,36 @@ const bgMusic = document.getElementById('bgMusic');
 const particlesContainer = document.querySelector('.particles-container');
 const musicOptions = document.querySelectorAll('.music-option');
 const volumeSlider = document.getElementById('volumeSlider');
+const roleSelect = document.getElementById('roleSelect');
 
 // Farewell Message Template
-const farewellMessage = (name) => `Dear ${name},
+const farewellMessage = (name, role) => {
+    if (role === 'teacher') {
+        return `Dear Respected Faculty Members,
+
+With immense respect and heartfelt gratitude,
+we, the 3rd year students of the ECE Department,
+warmly invite you to grace the occasion of our Farewell Fest 2025,
+organized in honor of our beloved final year seniors.
+
+Your presence would mean a great deal to us,
+as we bid farewell to a memorable batch whose journey you've guided, nurtured, and inspired.
+
+Let us come together to celebrate their accomplishments,
+reflect on shared memories, and wish them the very best for their future endeavors.
+
+🎓 FAREWELL FEST 2025 🎓
+
+📍 Venue: C. V. Raman Indoor Auditorium
+📅 Date: Monday, 21st April 2025
+🕑 Time: 2:00 PM onwards
+
+We would be honored by your esteemed presence and blessings on this heartfelt occasion.
+
+Warm regards,
+3rd Year Students – ECE Department ❤️`;
+    } else {
+        return `Dear ${name},
 
 With love in our hearts ❤️ and gratitude in every word,
 we, your juniors from the ECE Department,
@@ -35,12 +62,14 @@ not goodbye, but thank you 💓
 
 With heartfelt wishes and endless love,
 Your Juniors 💘`;
+    }
+};
 
 // Typewriter Effect
-function startTypewriter(name) {
+function startTypewriter(name, role) {
     const typewriterText = document.getElementById('typewriter-text');
     typewriterText.innerHTML = '';
-    const paragraphs = farewellMessage(name).split('\n\n');
+    const paragraphs = farewellMessage(name, role).split('\n\n');
     let currentParagraph = 0;
     let currentChar = 0;
     let isTyping = true;
@@ -181,19 +210,16 @@ document.addEventListener('visibilitychange', () => {
 
 // Update openLetterBtn click handler
 openLetterBtn.addEventListener('click', () => {
-    console.log('Open letter button clicked');
     const name = nameInput.value.trim();
-    console.log('Name entered:', name);
+    const role = roleSelect.value;
     
-    if (name) {
-        console.log('Hiding entry screen and showing letter screen');
+    if (name && role) {
         entryScreen.classList.add('hidden');
         letterScreen.classList.remove('hidden');
-        startTypewriter(name);
+        startTypewriter(name, role);
         bgMusic.play();
     } else {
-        console.log('No name entered');
-        alert('Please enter your name');
+        alert('Please enter your name and select your role');
     }
 });
 
@@ -201,7 +227,7 @@ openLetterBtn.addEventListener('click', () => {
 replayBtn.addEventListener('click', () => {
     const typewriterText = document.getElementById('typewriter-text');
     typewriterText.innerHTML = '';
-    startTypewriter(nameInput.value.trim());
+    startTypewriter(nameInput.value.trim(), roleSelect.value);
     bgMusic.currentTime = 0;
     bgMusic.play();
 });
