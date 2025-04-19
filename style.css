@@ -795,4 +795,13 @@ input[type="text"]:focus {
 .letter-content {
     position: relative;
     z-index: 3;
+}
+
+.info-footer {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0, 123, 255, 0.1);
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
 } 
