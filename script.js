@@ -11,11 +11,12 @@ const particlesContainer = document.querySelector('.particles-container');
 const musicOptions = document.querySelectorAll('.music-option');
 const volumeSlider = document.getElementById('volumeSlider');
 const roleSelect = document.getElementById('roleSelect');
+const snowContainer = document.querySelector('.snow-container');
 
 // Farewell Message Template
 const farewellMessage = (name, role) => {
     if (role === 'teacher') {
-        return `Dear Respected Faculty Members,
+        return `Dear Respected ${name} Sir/Madam,
 
 With immense respect and heartfelt gratitude,
 we, the 3rd year students of the ECE Department,
@@ -30,9 +31,9 @@ reflect on shared memories, and wish them the very best for their future endeavo
 
 🎓 FAREWELL FEST 2025 🎓
 
-📍 Venue: C. V. Raman Indoor Auditorium
 📅 Date: Monday, 21st April 2025
 🕑 Time: 2:00 PM onwards
+📍 Venue: C. V. Raman Indoor Auditorium
 
 We would be honored by your esteemed presence and blessings on this heartfelt occasion.
 
@@ -53,9 +54,9 @@ allow us to honor your remarkable path with joy and admiration 💗.
 
 🎓 HAPPY FAREWELL 2025 🎓
 
-📍 Venue: C. V. Raman Indoor Auditorium
 📅 Date: Monday, 21st April 2025
 🕑 Time: 2:00 PM onwards
+📍 Venue: C. V. Raman Indoor Auditorium
 
 Let's gather to laugh, to remember, and to say —
 not goodbye, but thank you 💓
@@ -170,6 +171,68 @@ function animateParticles() {
     requestAnimationFrame(animateParticles);
 }
 
+// Snow Effect
+class SnowElement {
+    constructor(type) {
+        this.type = type;
+        this.reset();
+    }
+
+    reset() {
+        this.x = Math.random() * window.innerWidth;
+        this.y = -10;
+        this.size = this.type === 'flake' ? Math.random() * 3 + 2 : Math.random() * 15 + 10;
+        this.speed = this.type === 'flake' ? Math.random() * 2 + 1 : Math.random() * 3 + 2;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = this.type === 'flake' ? Math.random() * 2 - 1 : Math.random() * 3 - 1.5;
+        this.element = document.createElement('div');
+        this.element.className = this.type === 'flake' ? 'snowflake' : 'snow-crystal';
+        this.element.style.cssText = `
+            width: ${this.size}px;
+            height: ${this.size}px;
+            left: ${this.x}px;
+            top: ${this.y}px;
+            animation-duration: ${this.type === 'flake' ? 5 + Math.random() * 5 : 8 + Math.random() * 7}s;
+            animation-delay: ${Math.random() * 10}s;
+        `;
+    }
+
+    update() {
+        this.y += this.speed;
+        this.rotation += this.rotationSpeed;
+        this.element.style.transform = `translateY(${this.y}px) rotate(${this.rotation}deg)`;
+
+        if (this.y > window.innerHeight) {
+            this.reset();
+        }
+    }
+}
+
+const snowElements = [];
+const SNOWFLAKE_COUNT = 25;
+const CRYSTAL_COUNT = 15;
+
+function initSnow() {
+    // Create snowflakes
+    for (let i = 0; i < SNOWFLAKE_COUNT; i++) {
+        const snowflake = new SnowElement('flake');
+        snowElements.push(snowflake);
+        snowContainer.appendChild(snowflake.element);
+    }
+    
+    // Create snow crystals
+    for (let i = 0; i < CRYSTAL_COUNT; i++) {
+        const crystal = new SnowElement('crystal');
+        snowElements.push(crystal);
+        snowContainer.appendChild(crystal.element);
+    }
+}
+
+function animateSnow() {
+    snowElements.forEach(element => element.update());
+    requestAnimationFrame(animateSnow);
+}
+
 // Set initial volume
 bgMusic.volume = 0.3;
 volumeSlider.value = 30;
@@ -254,6 +317,8 @@ window.addEventListener('load', () => {
     try {
         initParticles();
         animateParticles();
+        initSnow();
+        animateSnow();
     } catch (error) {
         console.error('Error in initialization:', error);
     }
@@ -266,6 +331,7 @@ window.addEventListener('resize', () => {
     resizeTimeout = setTimeout(() => {
         try {
             particles.forEach(particle => particle.reset());
+            snowElements.forEach(element => element.reset());
         } catch (error) {
             console.error('Error in resize handler:', error);
         }
