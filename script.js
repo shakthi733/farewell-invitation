@@ -12,6 +12,7 @@ const musicOptions = document.querySelectorAll('.music-option');
 const volumeSlider = document.getElementById('volumeSlider');
 const roleSelect = document.getElementById('roleSelect');
 const snowContainer = document.querySelector('.snow-container');
+const handwrittenContainer = document.getElementById('handwrittenContainer');
 
 // Farewell Message Template
 const farewellMessage = (name, role) => {
@@ -74,6 +75,16 @@ function startTypewriter(name, role) {
     let currentParagraph = 0;
     let currentChar = 0;
     let isTyping = true;
+    let typingSpeed = 30; // Base typing speed
+    let pauseBetweenParagraphs = 400; // Pause between paragraphs
+
+    function getTypingSpeed(char) {
+        // Vary speed based on character type
+        if (char === ' ' || char === '\n') return typingSpeed * 0.5;
+        if (char === ',' || char === '.') return typingSpeed * 1.5;
+        if (char === '!' || char === '?') return typingSpeed * 2;
+        return typingSpeed;
+    }
 
     function type() {
         if (currentParagraph < paragraphs.length) {
@@ -83,10 +94,15 @@ function startTypewriter(name, role) {
                 const p = document.createElement('p');
                 if (paragraph.includes('🎓')) {
                     p.className = 'farewell-title';
+                    typingSpeed = 40; // Slower for titles
                 } else if (paragraph.includes('📍') || paragraph.includes('📅') || paragraph.includes('🕑')) {
                     p.className = 'detail-item';
+                    typingSpeed = 35; // Medium speed for details
                 } else if (paragraph.includes('Your Juniors')) {
                     p.className = 'signature';
+                    typingSpeed = 45; // Slowest for signature
+                } else {
+                    typingSpeed = 30; // Normal speed for regular text
                 }
                 typewriterText.appendChild(p);
             }
@@ -94,19 +110,43 @@ function startTypewriter(name, role) {
             const currentP = typewriterText.lastElementChild;
             
             if (currentChar < paragraph.length) {
-                currentP.textContent = paragraph.substring(0, currentChar + 1);
+                // Add character with smooth transition
+                const span = document.createElement('span');
+                span.textContent = paragraph[currentChar];
+                span.style.opacity = '0';
+                span.style.transition = 'opacity 0.1s ease';
+                currentP.appendChild(span);
+                
+                // Fade in the character
+                setTimeout(() => {
+                    span.style.opacity = '1';
+                }, 10);
+
                 currentChar++;
-                // Vary the typing speed based on character type
-                const delay = paragraph[currentChar - 1] === ' ' ? 20 : 30;
+                
+                // Calculate next delay based on character type
+                const nextChar = paragraph[currentChar];
+                const delay = getTypingSpeed(nextChar);
                 setTimeout(type, delay);
             } else {
                 currentParagraph++;
                 currentChar = 0;
                 if (currentParagraph < paragraphs.length) {
-                    // Shorter pause between paragraphs
-                    setTimeout(type, 200);
+                    // Pause between paragraphs
+                    setTimeout(type, pauseBetweenParagraphs);
                 } else {
                     isTyping = false;
+                    // Show handwritten message only for student role
+                    if (role === 'student') {
+                        setTimeout(() => {
+                            handwrittenContainer.classList.remove('hidden');
+                            
+                            // Hide handwritten message after 3 seconds
+                            setTimeout(() => {
+                                handwrittenContainer.classList.add('hidden');
+                            }, 3000);
+                        }, 2000); // 2 second delay after letter completion
+                    }
                 }
             }
         }

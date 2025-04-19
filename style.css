@@ -804,4 +804,128 @@ input[type="text"]:focus {
     font-size: 0.85rem;
     color: #666;
     font-style: italic;
+}
+
+/* Handwritten Animation Styles */
+.handwritten-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(255, 240, 245, 0.9), rgba(255, 228, 225, 0.9));
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+}
+
+.handwritten-container:not(.hidden) {
+    opacity: 1;
+}
+
+.handwritten-container.hidden {
+    opacity: 0;
+}
+
+.handwritten-message {
+    text-align: center;
+    padding: 2rem;
+    transform: scale(0.95);
+    transition: transform 0.8s ease;
+}
+
+.handwritten-container:not(.hidden) .handwritten-message {
+    transform: scale(1);
+}
+
+.message-line {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4rem;
+    color: #ff69b4;
+    margin: 1rem 0;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.handwritten-container:not(.hidden) .message-line {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#thankYou {
+    animation: writeIn 2s ease forwards 0.2s;
+}
+
+#missYou {
+    animation: writeIn 2s ease forwards 2.2s;
+}
+
+#farewell {
+    animation: writeIn 2s ease forwards 4.2s;
+}
+
+.heart-emoji {
+    font-size: 3rem;
+    opacity: 0;
+    transform: scale(0);
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards 6.2s;
+}
+
+@keyframes writeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+        clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .message-line {
+        font-size: 3rem;
+    }
+    
+    .heart-emoji {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .message-line {
+        font-size: 2.5rem;
+    }
+    
+    .heart-emoji {
+        font-size: 2rem;
+    }
 } 
