@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farewell Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Entry Screen -->
+    <div class="screen entry-screen" id="entryScreen">
+        <div class="gradient-bg"></div>
+        <div class="entry-content">
+            <h1>Enter Your Name</h1>
+            <div class="input-container">
+                <input type="text" id="nameInput" placeholder="e.g., Priya" aria-label="Your name">
+                <button id="openLetterBtn" class="primary-btn">
+                    <span class="envelope-icon">✉️</span>
+                    Open Letter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Letter Screen -->
+    <div class="screen letter-screen hidden" id="letterScreen">
+        <div class="gradient-bg"></div>
+        <div class="envelope-container">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="letter-content">
+                        <h2>Farewell Invitation</h2>
+                        <div id="typewriter-text"></div>
+                        <div class="heart-container">
+                            <div class="heart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="action-buttons">
+            <button id="replayBtn" class="icon-btn" title="Replay">
+                <span class="icon">↺</span>
+            </button>
+            <button id="shareBtn" class="icon-btn" title="Share">
+                <span class="icon">↗</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" autoplay loop>
+        <source src="audio/16.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Selection Panel -->
+    <div class="music-panel hidden" id="musicPanel">
+        <h3>Select Background Music</h3>
+        <div class="music-options">
+            <button class="music-option" data-src="audio/16.mp3">
+                <span class="music-icon">🎵</span>
+                Background Music
+            </button>
+        </div>
+        <div class="volume-control">
+            <span class="volume-icon">🔊</span>
+            <input type="range" id="volumeSlider" min="0" max="100" value="30">
+        </div>
+    </div>
+
+    <!-- Particle Container -->
+    <div class="particles-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
